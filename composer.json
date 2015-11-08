@@ -1,7 +1,8 @@
 {
     "name": "eric-chau/annotation-skill",
     "require": {
-        "minime/annotations": "2.3.*"
+        "minime/annotations": "2.3.*",
+        "doctrine/cache": "~1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "4.7.*"
