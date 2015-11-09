@@ -9,7 +9,6 @@ class UnsupportedAnnotationException extends \InvalidArgumentException
 {
     public function __construct($handlerClass, $annotation)
     {
-        $msg = sprintf('"%s" annotation is not supported by %s.', get_class($annotation), $handlerClass);
-        parent::__construct($msg);
+        parent::__construct("'$handlerClass' annotation is not supported by ".get_class($annotation));
     }
 }

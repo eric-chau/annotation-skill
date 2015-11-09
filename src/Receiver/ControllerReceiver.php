@@ -23,10 +23,17 @@ class ControllerReceiver
     public function onControllerEvent(ControllerEvent $event)
     {
         $request = $this->jarvis['request'];
-        $request->attributes->add((array) $event->arguments);
+        $request->attributes->add((array) $event->getArguments());
+
+        if (!is_array($event->getCallback())) {
+            return;
+        }
+
+        list($controller, $action) = $event->getCallback();
+
         $annotations = array_merge(
-            $this->jarvis['annotation_reader']->getClassAnnotations($event->controller)->toArray(),
-            $this->jarvis['annotation_reader']->getMethodAnnotations($event->controller, $event->action)->toArray()
+            $this->jarvis->annotation_reader->getClassAnnotations($controller)->toArray(),
+            $this->jarvis->annotation_reader->getMethodAnnotations($controller, $action)->toArray()
         );
 
         $handlers = $this->jarvis->find(self::ANNOTATION_HANDLER_SERVICE_BASE_IDENTIFIER.'*');
@@ -39,13 +46,13 @@ class ControllerReceiver
         }
 
         $arguments = [];
-        $reflectionMethod = new \ReflectionMethod($event->controller, $event->action);
+        $reflectionMethod = new \ReflectionMethod($controller, $action);
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             if ($request->attributes->has($name = $reflectionParameter->getName())) {
                 $arguments[$name] = $request->attributes->get($name);
             }
         }
 
-        $event->arguments = $arguments;
+        $event->setArguments($arguments);
     }
 }
