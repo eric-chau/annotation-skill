@@ -3,19 +3,13 @@
 namespace Jarvis\Skill\Annotation;
 
 use Jarvis\Jarvis;
-
 use Jarvis\Skill\Annotation\Cache\DoctrineCache;
 use Jarvis\Skill\Annotation\Receiver\ControllerReceiver;
-
 use Jarvis\Skill\DependencyInjection\ContainerProviderInterface;
 use Jarvis\Skill\DependencyInjection\Reference;
-
 use Jarvis\Skill\EventBroadcaster\JarvisEvents;
-
 use Minime\Annotations\Cache\ArrayCache;
 use Minime\Annotations\Reader;
-
-use JarvisNews\DoctrineORM\Rest\Annotation\PaginationHandler;
 
 /**
  * @author Eric Chau <eric.chau@gmail.com>
@@ -40,17 +34,13 @@ class ContainerProvider implements ContainerProviderInterface
 
         $jarvis->lock('annotation_reader');
 
-        $jarvis['anno.controller_receiver'] = function ($jarvis) {
+        $jarvis['annotation.controller_receiver'] = function ($jarvis) {
             return new ControllerReceiver($jarvis);
         };
 
         $jarvis->addReceiver(
             JarvisEvents::CONTROLLER_EVENT,
-            [new Reference('anno.controller_receiver'), 'onControllerEvent']
+            [new Reference('annotation.controller_receiver'), 'onControllerEvent']
         );
-
-        $jarvis['annotation.handler.rest.pagination'] = function ($jarvis) {
-            return new PaginationHandler($jarvis->request);
-        };
     }
 }
