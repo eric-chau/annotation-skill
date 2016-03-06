@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Jarvis\Skill\Annotation;
 
 use Minime\Annotations\Parser as MinimeParser;
@@ -12,7 +14,7 @@ class Parser extends MinimeParser
     /**
      * List of Php docblock annotation to ignore
      */
-    protected $annotationsToIgnore = [
+    protected $annosToIgnore = [
         'api'            => true,
         'author'         => true,
         'category'       => true,
@@ -50,7 +52,7 @@ class Parser extends MinimeParser
      */
     public function __construct()
     {
-        $this->types['Jarvis\Skill\Annotation\Types\Concrete'] = '=>';
+        $this->types['\Jarvis\Skill\Annotation\Types\Concrete'] = '=>';
 
         parent::__construct();
     }
@@ -62,16 +64,16 @@ class Parser extends MinimeParser
      */
     protected function parseAnnotations($str)
     {
-        $annotations = [];
+        $annos = [];
         preg_match_all($this->dataPattern, $str, $found);
         foreach ($found[2] as $key => $value) {
-            if (isset($this->annotationsToIgnore[$found[1][$key]])) {
+            if (isset($this->annosToIgnore[$found[1][$key]])) {
                 continue;
             }
 
-            $annotations[ $this->sanitizeKey($found[1][$key]) ][] = $this->parseValue($value, $found[1][$key]);
+            $annos[$this->sanitizeKey($found[1][$key])][] = $this->parseValue($value, $found[1][$key]);
         }
 
-        return $annotations;
+        return $annos;
     }
 }

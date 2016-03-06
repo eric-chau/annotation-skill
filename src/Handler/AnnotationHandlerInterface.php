@@ -1,6 +1,8 @@
 <?php
 
-namespace Jarvis\Skill\Annotation;
+declare(strict_types = 1);
+
+namespace Jarvis\Skill\Annotation\Handler;
 
 /**
  * @author Eric Chau <eriic.chau@gmail.com>
@@ -8,5 +10,5 @@ namespace Jarvis\Skill\Annotation;
 interface AnnotationHandlerInterface
 {
     public function handle($annotation);
-    public function supports($annotation);
+    public function supports($annotation) : bool;
 }

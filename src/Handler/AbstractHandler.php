@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Jarvis\Skill\Annotation\Handler;
 
-use Jarvis\Skill\Annotation\AnnotationHandlerInterface;
+use Jarvis\Skill\Annotation\Handler\AnnotationHandlerInterface;
 use Jarvis\Skill\Annotation\Exception\UnsupportedAnnotationException;
 
 /**
@@ -13,10 +15,10 @@ abstract class AbstractHandler implements AnnotationHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle($annotation)
+    public function handle($anno)
     {
-        if (!$this->supports($annotation)) {
-            throw new UnsupportedAnnotationException(static::class, $annotation);
+        if (!$this->supports($anno)) {
+            throw new UnsupportedAnnotationException(static::class, $anno);
         }
     }
 }

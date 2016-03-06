@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Jarvis\Skill\Annotation\Cache;
 
 use Doctrine\Common\Cache\CacheProvider;
@@ -22,7 +24,7 @@ class DoctrineCache implements CacheInterface
      */
     public function getKey($docblock)
     {
-        return md5($docblock);
+        return is_string($docblock) ? md5($docblock) : '';
     }
 
     /**

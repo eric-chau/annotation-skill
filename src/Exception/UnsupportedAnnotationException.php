@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Jarvis\Skill\Annotation\Exception;
 
 /**
@@ -7,8 +9,8 @@ namespace Jarvis\Skill\Annotation\Exception;
  */
 class UnsupportedAnnotationException extends \InvalidArgumentException
 {
-    public function __construct($handlerClass, $annotation)
+    public function __construct(string $handlerClass, $anno)
     {
-        parent::__construct("'$handlerClass' annotation is not supported by ".get_class($annotation));
+        parent::__construct(get_class($anno) . " is not supported by $handlerClass.");
     }
 }

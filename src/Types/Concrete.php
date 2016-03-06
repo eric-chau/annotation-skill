@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Jarvis\Skill\Annotation\Types;
 
 use Minime\Annotations\Interfaces\TypeInterface;
@@ -22,11 +24,11 @@ class Concrete implements TypeInterface
      */
     public function parse($value, $class = null)
     {
-        if (! class_exists($class)) {
+        if (!class_exists($class)) {
             throw new ParserException("Concrete annotation expects {$class} to exist.");
         }
 
-        return $this->makeInstance($class, (new Json)->parse($value));
+        return $this->makeInstance($class, (new Json())->parse($value));
     }
 
     /**
