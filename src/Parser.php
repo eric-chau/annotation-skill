@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Jarvis\Skill\Annotation;
 
@@ -14,7 +14,7 @@ class Parser extends MinimeParser
     /**
      * List of Php docblock annotation to ignore
      */
-    protected $annosToIgnore = [
+    protected $annotationsToIgnore = [
         'api'            => true,
         'author'         => true,
         'category'       => true,
@@ -46,34 +46,42 @@ class Parser extends MinimeParser
     ];
 
     /**
-     * Overrides Minime\Annotation\Parser::__construct to add Jarvis custom Concrete type.
-     *
-     * {@inheritdoc}
+     * @var bool
      */
-    public function __construct()
-    {
-        $this->types['\Jarvis\Skill\Annotation\Types\Concrete'] = '=>';
+    protected $filterPhpDoc = true;
 
-        parent::__construct();
+    /**
+     * Enables filtering annotation that belongs to PhpDoc.
+     */
+    public function enableFilterPhpDoc(): void
+    {
+        $this->filterPhpDoc = true;
     }
 
     /**
-     * Overrides Mime\Annotation\Parser::parseAnnotations to ignore Php docblock annotations.
+     * Disables filtering annotation that belongs to PhpDoc.
+     */
+    public function disableFilterPhpDoc(): void
+    {
+        $this->filterPhpDoc = false;
+    }
+
+    /**
+     * Overrides MinimeParser::parse() to filter Php docblock annotations
+     * if filtering PhpDoc is enabled.
      *
      * {@inheritdoc}
      */
-    protected function parseAnnotations($str)
+    public function parse($docblock)
     {
-        $annos = [];
-        preg_match_all($this->dataPattern, $str, $found);
-        foreach ($found[2] as $key => $value) {
-            if (isset($this->annosToIgnore[$found[1][$key]])) {
-                continue;
-            }
+        $annotations = parent::parse($docblock);
 
-            $annos[$this->sanitizeKey($found[1][$key])][] = $this->parseValue($value, $found[1][$key]);
-        }
+        return !$this->filterPhpDoc
+            ? $annotations
+            : array_filter($annotations, function (string $name) {
+                return !isset($this->annotationsToIgnore[$name]);
+            }, ARRAY_FILTER_USE_KEY)
+        ;
 
-        return $annos;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Jarvis\Skill\Annotation\Cache;
 
@@ -10,7 +10,7 @@ use Minime\Annotations\Interfaces\CacheInterface;
 /**
  * @author Eric Chau <eriic.chau@gmail.com>
  */
-class DoctrineCache implements CacheInterface
+class DoctrineCacheAdapter implements CacheInterface
 {
     private $doctrineCache;
 
