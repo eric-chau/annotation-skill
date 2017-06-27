@@ -1,7 +1,7 @@
 {
     "name": "eric-chau/annotation-skill",
     "require": {
-        "minime/annotations": "~2.3.0",
+        "minime/annotations": "~3.0",
         "doctrine/cache": "~1.6.0"
     },
     "autoload": {
